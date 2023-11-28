@@ -12,6 +12,8 @@ const username = process.env.MONGODB_USERNAME;
 const password = process.env.MONGODB_PASSWORD;
 
 // MongoDB setup
+
+
 mongoose.connect(`mongodb+srv://revanthjr:${password}@cluster0.k3e4s6s.mongodb.net/registrationFormDB`,
   {
     useNewUrlParser: true,
@@ -26,8 +28,7 @@ const registrationSchema = new mongoose.Schema({
   password: String,
 });
 
-const registration = mongoose.model('Registration', registrationSchema);
-
+const Registration = mongoose.model('Registration', registrationSchema);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -51,11 +52,10 @@ app.post('/register', async (req, res) => {
     }
     else {
       console.log("User Already exist");
-      res.redirect("/error");
+      res.redirect("error-user-already-exists");
     }
 
   }
-
   catch (error) {
     console.log(error);
     res.redirect("error");
@@ -69,6 +69,10 @@ app.get("/success", (req, res) => {
 
 app.get("/error", (req, res) => {
   res.sendFile(__dirname + "/pages/error.html");
+})
+
+app.get("/error-user-already-exists", (req, res) => {
+  res.sendFile(__dirname + "/pages/error-user-already-exists.html");
 })
 
 
